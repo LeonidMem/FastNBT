@@ -1,5 +1,10 @@
 # FastNBT
-The fast as possible library for NBT.
+As fast as possible library for NBT.
+
+### Why is it fast as possible?
+* Single calls to Java reflection only during initialization unlike **NBTAPI**
+* Read-only NBT mode
+* There is no any locks or synchronizations _(in other words, it is not multithreaded)_
 
 ## Supported versions:
 * **v1_19_R1** *(1.19.1 — 1.19.2)*
@@ -20,7 +25,7 @@ The fast as possible library for NBT.
   <dependency>
     <groupId>ru.leonidm</groupId>
     <artifactId>FastNBT</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
   </dependency>
 </dependencies>
 ```
@@ -32,11 +37,11 @@ repositories {
 }
 
 dependencies {
-  implementation 'ru.leonidm:FastNBT:0.0.1-SNAPSHOT'
+  implementation 'ru.leonidm:FastNBT:0.0.2-SNAPSHOT'
 }
 ```
 
-# Usage
+## Usage
 ### Items
 ```java
 PlayerInventory inventory = player.getInventory();

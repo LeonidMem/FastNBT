@@ -24,6 +24,11 @@ public interface FastNBTList {
 
     void addDouble(double value);
 
+    @NotNull
+    String getString(int index);
+
+    void addString(@NotNull String value);
+
     int @NotNull [] getIntArray(int index);
 
     void addIntArray(int @NotNull [] value);

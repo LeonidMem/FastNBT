@@ -54,6 +54,17 @@ final class UnmodifiableFastNBTList implements FastNBTList {
     }
 
     @Override
+    @NotNull
+    public String getString(int index) {
+        return origin.getString(index);
+    }
+
+    @Override
+    public void addString(@NotNull String value) {
+        throw new UnsupportedOperationException("FastNBTList is unmodifiable");
+    }
+
+    @Override
     public int @NotNull [] getIntArray(int index) {
         return origin.getIntArray(index);
     }

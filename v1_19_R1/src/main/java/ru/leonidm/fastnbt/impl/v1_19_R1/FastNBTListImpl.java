@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagIntArray;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagLongArray;
 import net.minecraft.nbt.NBTTagShort;
+import net.minecraft.nbt.NBTTagString;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import ru.leonidm.fastnbt.api.FastNBTCompound;
@@ -70,6 +71,19 @@ public class FastNBTListImpl implements FastNBTList {
     public void addDouble(double value) {
         // a = NBTTagDouble (D)NBTTagDouble valueOf
         nbtTagList.add(NBTTagDouble.a(value));
+    }
+
+    @Override
+    @NotNull
+    public String getString(int index) {
+        // j = NBTTagList (I)String getString
+        return nbtTagList.j(index);
+    }
+
+    @Override
+    public void addString(@NotNull String value) {
+        // a = NBTTagString (String)NBTTagString valueOf
+        nbtTagList.add(NBTTagString.a(value));
     }
 
     @Override
