@@ -1,0 +1,20 @@
+package ru.leonidm.fastnbt.impl.v1_19_R1;
+
+import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import ru.leonidm.fastnbt.api.FastNBTItem;
+
+public abstract class FastNBTItemImpl extends FastNBTCompoundImpl implements FastNBTItem {
+
+    protected ItemStack itemStack;
+
+    protected FastNBTItemImpl() {
+
+    }
+
+    @Override
+    @NotNull
+    public ItemStack getOrigin() {
+        return itemStack;
+    }
+}

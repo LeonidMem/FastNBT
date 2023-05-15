@@ -1,0 +1,108 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'net.minecrell.plugin-yml.bukkit' version '0.5.2'
+}
+
+def fastNbtGroupId = 'ru.leonidm'
+def fastNbtArtifactId = 'FastNBT'
+def fastNbtVersion = '0.0.1-SNAPSHOT'
+
+group = fastNbtGroupId
+version = fastNbtVersion
+
+rootProject.allprojects {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+
+        maven { url = uri("https://papermc.io/repo/repository/maven-public/") }
+        maven { url = uri("https://repo.papermc.io/repository/maven-public/") }
+        maven { url = uri("https://oss.sonatype.org/content/groups/public/") }
+
+        maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    }
+}
+
+
+sourceCompatibility = 17
+targetCompatibility = 17
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'
+tasks.withType(Javadoc) { options.encoding = 'UTF-8' }
+
+bukkit {
+    name = fastNbtArtifactId
+    version = fastNbtVersion
+    main = 'ru.leonidm.fastnbt.FastNBT'
+    apiVersion = '1.17'
+    authors = ['LeonidM', 'Supcheg']
+}
+
+def fullSupport = [':core', ':v1_19_R1']
+
+jar {
+    dependsOn = fullSupport.collect { it + ":compileJava" }
+    from {
+        files(fullSupport.collect { project(it).sourceSets.main.output })
+    }
+}
+
+// ./gradlew build -PjarOut=/foo/bar -PjarName=foo.jar
+build {
+    if (project.hasProperty("jarOut")) {
+        var jarOutput = project.properties["jarOut"] as String
+        println "Jar output: $jarOutput"
+        tasks.jar.destinationDirectory.set(file(jarOutput))
+    }
+    if (project.hasProperty("jarName")) {
+        var a = project.properties["jarName"] as String
+        println "Jar name: $a"
+        tasks.jar.archiveFileName.set(a)
+    }
+}
+
+javadoc {
+    source = sourceSets.main.allJava
+    classpath = configurations.compileClasspath
+    options {
+        setMemberLevel JavadocMemberLevel.PUBLIC
+        setAuthor true
+
+        links "https://docs.oracle.com/javase/8/docs/api/"
+    }
+}
+
+task sourceJar(type: Jar) {
+    archiveClassifier.set("sources")
+    from sourceSets.main.allJava
+}
+
+task packageJavadoc(type: Jar) {
+    archiveClassifier.set("javadoc")
+    from javadoc
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = fastNbtGroupId
+            artifactId = fastNbtArtifactId
+            version = fastNbtVersion
+
+            from components.java
+            artifact sourceJar
+            artifact packageJavadoc
+        }
+    }
+    repositories {
+        maven {
+            name = "smashUpRepository"
+            url "https://mvn.smashup.ru/releases"
+            credentials(PasswordCredentials)
+            authentication {
+                basic(BasicAuthentication)
+            }
+        }
+    }
+}
