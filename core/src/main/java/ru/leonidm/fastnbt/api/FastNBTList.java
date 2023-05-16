@@ -81,6 +81,18 @@ public interface FastNBTList<E> extends Iterable<E> {
         return false;
     }
 
+    default boolean remove(@NotNull E e) {
+        int i = 0;
+        for (E e1 : this) {
+            if (e.equals(e1)) {
+                remove(i);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     @NotNull
     @Contract("-> new")
     FastNBTList<E> copy();
