@@ -71,6 +71,16 @@ public interface FastNBTList<E> extends Iterable<E> {
 
     boolean isEmpty();
 
+    default boolean contains(@NotNull E e) {
+        for (E e1 : this) {
+            if (e.equals(e1)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     @NotNull
     @Contract("-> new")
     FastNBTList<E> copy();

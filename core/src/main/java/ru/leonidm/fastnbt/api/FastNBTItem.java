@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import ru.leonidm.fastnbt.utils.FastEntityFactory;
 
 public interface FastNBTItem extends FastNBTCompound {
+
     @NotNull
     static FastNBTItem write(@NotNull ItemStack itemStack, boolean directApply) {
         return FastEntityFactory.get().wrapForWrite(itemStack, directApply);
