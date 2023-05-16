@@ -13,13 +13,22 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import ru.leonidm.fastnbt.api.FastNBTCompound;
 import ru.leonidm.fastnbt.api.FastNBTList;
+import ru.leonidm.fastnbt.api.FastNBTType;
 
-public class FastNBTListImpl implements FastNBTList {
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+
+public class FastNBTListImpl<E> implements FastNBTList<E> {
 
     protected NBTTagList nbtTagList;
+    protected FastNBTType<E> fastNBTType;
+    protected int modCount = 0;
 
-    public FastNBTListImpl(@NotNull NBTTagList nbtTagList) {
+    public FastNBTListImpl(@NotNull NBTTagList nbtTagList, @NotNull FastNBTType<E> fastNBTType) {
         this.nbtTagList = nbtTagList;
+        this.fastNBTType = fastNBTType;
     }
 
     protected FastNBTListImpl() {
@@ -36,6 +45,7 @@ public class FastNBTListImpl implements FastNBTList {
     public void addShort(short value) {
         // a = NBTTagShort (S)NBTTagShort valueOf
         nbtTagList.add(NBTTagShort.a(value));
+        modCount += 1;
     }
 
     @Override
@@ -48,6 +58,7 @@ public class FastNBTListImpl implements FastNBTList {
     public void addInt(int value) {
         // a = NBTTagInt (I)NBTTagInt valueOf
         nbtTagList.add(NBTTagInt.a(value));
+        modCount += 1;
     }
 
     @Override
@@ -60,6 +71,7 @@ public class FastNBTListImpl implements FastNBTList {
     public void addFloat(float value) {
         // a = NBTTagFloat (F)NBTTagFloat valueOf
         nbtTagList.add(NBTTagFloat.a(value));
+        modCount += 1;
     }
 
     @Override
@@ -72,6 +84,7 @@ public class FastNBTListImpl implements FastNBTList {
     public void addDouble(double value) {
         // a = NBTTagDouble (D)NBTTagDouble valueOf
         nbtTagList.add(NBTTagDouble.a(value));
+        modCount += 1;
     }
 
     @Override
@@ -85,6 +98,7 @@ public class FastNBTListImpl implements FastNBTList {
     public void addString(@NotNull String value) {
         // a = NBTTagString (String)NBTTagString valueOf
         nbtTagList.add(NBTTagString.a(value));
+        modCount += 1;
     }
 
     @Override
@@ -96,6 +110,7 @@ public class FastNBTListImpl implements FastNBTList {
     @Override
     public void addIntArray(int @NotNull [] value) {
         nbtTagList.add(new NBTTagIntArray(value));
+        modCount += 1;
     }
 
     @Override
@@ -107,6 +122,7 @@ public class FastNBTListImpl implements FastNBTList {
     @Override
     public void addLongArray(long @NotNull [] value) {
         nbtTagList.add(new NBTTagLongArray(value));
+        modCount += 1;
     }
 
     @Override
@@ -119,18 +135,20 @@ public class FastNBTListImpl implements FastNBTList {
     @Override
     public void addCompound(@NotNull FastNBTCompound fastNBTCompound) {
         nbtTagList.add(((FastNBTCompoundImpl) fastNBTCompound).nbtTagCompound);
+        modCount += 1;
     }
 
     @Override
     @NotNull
-    public FastNBTList getList(int index) {
+    public <T> FastNBTList<T> getList(int index, @NotNull FastNBTType<T> fastNBTType) {
         // b = NBTTagList (I)NBTTagList getList
-        return new FastNBTListImpl(nbtTagList.b(index));
+        return new FastNBTListImpl<>(nbtTagList.b(index), fastNBTType);
     }
 
     @Override
-    public void addList(@NotNull FastNBTList fastNBTList) {
-        nbtTagList.add(((FastNBTListImpl) fastNBTList).nbtTagList);
+    public void addList(@NotNull FastNBTList<?> fastNBTList) {
+        nbtTagList.add(((FastNBTListImpl<?>) fastNBTList).nbtTagList);
+        modCount += 1;
     }
 
     @Override
@@ -143,12 +161,14 @@ public class FastNBTListImpl implements FastNBTList {
     @Override
     public void addItemStack(@NotNull ItemStack itemStack) {
         nbtTagList.add(NMSFastNBTUtils.asCompound(itemStack));
+        modCount += 1;
     }
 
     @Override
     public void remove(int index) {
         // c = NBTTagList (I)net.minecraft.nbt.NBTBase remove
         nbtTagList.c(index);
+        modCount += 1;
     }
 
     @Override
@@ -164,9 +184,45 @@ public class FastNBTListImpl implements FastNBTList {
     @Override
     @NotNull
     @Contract("-> new")
-    public FastNBTList copy() {
+    public FastNBTList<E> copy() {
         // c = NBTTagList ()net.minecraft.nbt.NBTBase copy
-        return new FastNBTListImpl((NBTTagList) nbtTagList.c());
+        return new FastNBTListImpl<>((NBTTagList) nbtTagList.c(), fastNBTType);
+    }
+
+    @Override
+    @NotNull
+    public Iterator<E> iterator() {
+        return new Iterator<>() {
+
+            private final int expectedModCount = modCount;
+            private int cursor = 0;
+
+            @Override
+            public boolean hasNext() {
+                return cursor <= size();
+            }
+
+            @Override
+            public E next() {
+                if (modCount != expectedModCount) {
+                    throw new ConcurrentModificationException();
+                }
+
+                int i = cursor;
+                if (i >= size()) {
+                    throw new NoSuchElementException();
+                }
+
+                cursor = i + 1;
+
+                var getter = fastNBTType.getListGetter();
+                if (getter == null) {
+                    throw new IllegalStateException("Cannot iterate over %s".formatted(fastNBTType.getName()));
+                }
+
+                return (E) getter.apply(FastNBTListImpl.this, cursor);
+            }
+        };
     }
 
     @Override
@@ -184,12 +240,13 @@ public class FastNBTListImpl implements FastNBTList {
             return false;
         }
 
-        FastNBTListImpl that = (FastNBTListImpl) o;
-        return nbtTagList.equals(that.nbtTagList);
+        FastNBTListImpl<?> that = (FastNBTListImpl<?>) o;
+        return fastNBTType == that.fastNBTType &&
+                nbtTagList.equals(that.nbtTagList);
     }
 
     @Override
     public int hashCode() {
-        return nbtTagList.hashCode();
+        return Objects.hash(fastNBTType, nbtTagList);
     }
 }

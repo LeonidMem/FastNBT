@@ -11,6 +11,12 @@ public abstract class FastNBTItemImpl extends FastNBTCompoundImpl implements Fas
     protected FastNBTItemImpl() {
 
     }
+    
+    protected void validateItemStack() {
+        if (itemStack == null || itemStack.getType().isAir()) {
+            throw new IllegalArgumentException("Cannot work with NBT of null or air");
+        }
+    }
 
     @Override
     @NotNull

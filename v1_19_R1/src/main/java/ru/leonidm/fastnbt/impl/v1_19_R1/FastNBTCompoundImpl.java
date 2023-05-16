@@ -184,15 +184,15 @@ public class FastNBTCompoundImpl implements FastNBTCompound {
 
     @Override
     @NotNull
-    public FastNBTList getList(@NotNull String key, @NotNull FastNBTType fastNbtType) {
+    public <T> FastNBTList<T> getList(@NotNull String key, @NotNull FastNBTType<T> fastNbtType) {
         // c = NBTTagCompound (String,I)NBTTagList getList
-        return new FastNBTListImpl(nbtTagCompound.c(key, fastNbtType.getId()));
+        return new FastNBTListImpl<>(nbtTagCompound.c(key, fastNbtType.getId()), fastNbtType);
     }
 
     @Override
-    public void setList(@NotNull String key, @NotNull FastNBTList fastNBTList) {
+    public void setList(@NotNull String key, @NotNull FastNBTList<?> fastNBTList) {
         // a = NBTTagCompound (String,net.minecraft.nbt.NBTBase)net.minecraft.nbt.NBTBase put
-        nbtTagCompound.a(key, ((FastNBTListImpl) fastNBTList).nbtTagList);
+        nbtTagCompound.a(key, ((FastNBTListImpl<?>) fastNBTList).nbtTagList);
     }
 
     @Override
@@ -221,7 +221,7 @@ public class FastNBTCompoundImpl implements FastNBTCompound {
     }
 
     @Override
-    public boolean contains(@NotNull String key, @NotNull FastNBTType fastNBTType) {
+    public boolean contains(@NotNull String key, @NotNull FastNBTType<?> fastNBTType) {
         // b = NBTTagCompound (String,I)Z contains
         return nbtTagCompound.b(key, fastNBTType.getId());
     }

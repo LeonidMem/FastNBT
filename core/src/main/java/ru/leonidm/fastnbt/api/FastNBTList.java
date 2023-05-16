@@ -6,8 +6,12 @@ import org.jetbrains.annotations.NotNull;
 import ru.leonidm.fastnbt.utils.FastNBTUtils;
 
 import java.util.List;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
-public interface FastNBTList {
+public interface FastNBTList<E> extends Iterable<E> {
 
     short getShort(int index);
 
@@ -52,9 +56,9 @@ public interface FastNBTList {
     void addCompound(@NotNull FastNBTCompound fastNBTCompound);
 
     @NotNull
-    FastNBTList getList(int index);
+    <T> FastNBTList<T> getList(int index, @NotNull FastNBTType<T> fastNBTType);
 
-    void addList(@NotNull FastNBTList fastNBTList);
+    void addList(@NotNull FastNBTList<?> fastNBTList);
 
     @NotNull
     ItemStack getItemStack(int index);
@@ -69,6 +73,22 @@ public interface FastNBTList {
 
     @NotNull
     @Contract("-> new")
-    FastNBTList copy();
+    FastNBTList<E> copy();
+
+    @Override
+    @NotNull
+    default Spliterator<E> spliterator() {
+        return Spliterators.spliterator(iterator(), size(), 0);
+    }
+
+    @NotNull
+    default Stream<E> stream() {
+        return StreamSupport.stream(spliterator(), false);
+    }
+
+    @NotNull
+    default Stream<E> parallelStream() {
+        return StreamSupport.stream(spliterator(), true);
+    }
 
 }

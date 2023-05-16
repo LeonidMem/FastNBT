@@ -79,9 +79,9 @@ public interface FastNBTCompound {
     void setCompound(@NotNull String key, @NotNull FastNBTCompound fastNBTCompound);
 
     @NotNull
-    FastNBTList getList(@NotNull String key, @NotNull FastNBTType fastNBTType);
+    <T> FastNBTList<T> getList(@NotNull String key, @NotNull FastNBTType<T> fastNBTType);
 
-    void setList(@NotNull String key, @NotNull FastNBTList fastNBTList);
+    void setList(@NotNull String key, @NotNull FastNBTList<?> fastNBTList);
 
     @NotNull
     ItemStack getItemStack(@NotNull String key);
@@ -93,7 +93,7 @@ public interface FastNBTCompound {
 
     boolean contains(@NotNull String key);
 
-    boolean contains(@NotNull String key, @NotNull FastNBTType fastNBTType);
+    boolean contains(@NotNull String key, @NotNull FastNBTType<?> fastNBTType);
 
     @NotNull
     Set<String> getKeys();

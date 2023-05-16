@@ -71,10 +71,10 @@ public final class FastNBTUtils {
     }
 
     @NotNull
-    public static FastNBTList unmodifiableList(@NotNull FastNBTList fastNBTList) {
+    public static <E> FastNBTList<E> unmodifiableList(@NotNull FastNBTList<E> fastNBTList) {
         return fastNBTList instanceof UnmodifiableFastNBTList
                 ? fastNBTList
-                : new UnmodifiableFastNBTList(fastNBTList);
+                : new UnmodifiableFastNBTList<>(fastNBTList);
     }
 
     @NotNull

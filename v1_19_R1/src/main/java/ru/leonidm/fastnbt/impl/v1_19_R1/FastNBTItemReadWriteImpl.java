@@ -39,6 +39,7 @@ public class FastNBTItemReadWriteImpl extends FastNBTItemImpl {
 
         if (directApply) {
             this.itemStack = itemStack;
+            validateItemStack();
             applyToMeta = NMSFastNBTUtils.getHandle(itemStack) == null;
         } else {
             net.minecraft.world.item.ItemStack nmsItemStack = null;
@@ -51,6 +52,7 @@ public class FastNBTItemReadWriteImpl extends FastNBTItemImpl {
             }
 
             this.itemStack = CraftItemStack.asCraftMirror(nmsItemStack);
+            validateItemStack();
             applyToMeta = false;
         }
 
@@ -175,10 +177,10 @@ public class FastNBTItemReadWriteImpl extends FastNBTItemImpl {
     }
 
     @Override
-    public void setList(@NotNull String key, @NotNull FastNBTList fastNBTList) {
+    public void setList(@NotNull String key, @NotNull FastNBTList<?> fastNBTList) {
         checkTag(key);
         super.setList(key, fastNBTList);
-        applyChanges(key, () -> ((FastNBTListImpl) fastNBTList).nbtTagList);
+        applyChanges(key, () -> ((FastNBTListImpl<?>) fastNBTList).nbtTagList);
     }
 
     @Override

@@ -5,12 +5,15 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import ru.leonidm.fastnbt.api.FastNBTCompound;
 import ru.leonidm.fastnbt.api.FastNBTList;
+import ru.leonidm.fastnbt.api.FastNBTType;
 
-final class UnmodifiableFastNBTList implements FastNBTList {
+import java.util.Iterator;
 
-    private final FastNBTList origin;
+final class UnmodifiableFastNBTList<E> implements FastNBTList<E> {
 
-    UnmodifiableFastNBTList(@NotNull FastNBTList origin) {
+    private final FastNBTList<E> origin;
+
+    UnmodifiableFastNBTList(@NotNull FastNBTList<E> origin) {
         this.origin = origin;
     }
 
@@ -98,12 +101,12 @@ final class UnmodifiableFastNBTList implements FastNBTList {
 
     @Override
     @NotNull
-    public FastNBTList getList(int index) {
-        return FastNBTUtils.unmodifiableList(origin.getList(index));
+    public <T> FastNBTList<T> getList(int index, @NotNull FastNBTType<T> fastNBTType) {
+        return FastNBTUtils.unmodifiableList(origin.getList(index, fastNBTType));
     }
 
     @Override
-    public void addList(@NotNull FastNBTList fastNBTList) {
+    public void addList(@NotNull FastNBTList<?> fastNBTList) {
         throw new UnsupportedOperationException("FastNBTList is unmodifiable");
     }
 
@@ -136,8 +139,14 @@ final class UnmodifiableFastNBTList implements FastNBTList {
     @Override
     @NotNull
     @Contract("-> new")
-    public FastNBTList copy() {
+    public FastNBTList<E> copy() {
         return origin.copy();
+    }
+
+    @Override
+    @NotNull
+    public Iterator<E> iterator() {
+        return origin.iterator();
     }
 
     @Override

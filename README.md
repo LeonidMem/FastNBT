@@ -25,7 +25,7 @@ As fast as possible library for NBT.
   <dependency>
     <groupId>ru.leonidm</groupId>
     <artifactId>FastNBT</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.1.0-SNAPSHOT</version>
   </dependency>
 </dependencies>
 ```
@@ -37,7 +37,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'ru.leonidm:FastNBT:0.0.3-SNAPSHOT'
+  implementation 'ru.leonidm:FastNBT:0.1.0-SNAPSHOT'
 }
 ```
 
@@ -54,7 +54,10 @@ if (itemStack != null && !itemStack.getType().isAir()) {
     int customModelData = nbtItem.getInt("CustomModelData");
     
     FastNBTCompound nbtCompound = nbtItem.getCompound("display");
-    FastNBTList nbtList = nbtItem.getList("Enchantments", FastNBTType.COMPOUND);
+    FastNBTList<FastNBTCompound> nbtList = nbtItem.getList("Enchantments", FastNBTType.COMPOUND);
+    for (FastNBTCompound listCompound : nbtList) {
+        int value = listCompound.getInt("Key");
+    }
     
     nbtItem.setInt("SomeKey", 1); // Will throw an exception, because nbtItem is read-only
     
@@ -73,5 +76,3 @@ if (itemStack != null && !itemStack.getType().isAir()) {
 * FastNBTBlock
 * Fix problem with Mojang keys in default ItemStacks
 * More supported MC versions
-* FastNBTList#iterator() and FastNBTList#stream(), probably generic
-* Annotations for arguments like `@NBT(write = true)`
