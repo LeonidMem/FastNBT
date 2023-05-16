@@ -199,7 +199,7 @@ public class FastNBTListImpl<E> implements FastNBTList<E> {
 
             @Override
             public boolean hasNext() {
-                return cursor <= size();
+                return cursor != size();
             }
 
             @Override
@@ -213,14 +213,14 @@ public class FastNBTListImpl<E> implements FastNBTList<E> {
                     throw new NoSuchElementException();
                 }
 
-                cursor = i + 1;
-
                 var getter = fastNBTType.getListGetter();
                 if (getter == null) {
                     throw new IllegalStateException("Cannot iterate over %s".formatted(fastNBTType.getName()));
                 }
 
-                return (E) getter.apply(FastNBTListImpl.this, cursor);
+                E e = getter.apply(FastNBTListImpl.this, cursor);
+                cursor = i + 1;
+                return e;
             }
         };
     }
