@@ -1,6 +1,7 @@
 package ru.leonidm.fastnbt.utils;
 
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import ru.leonidm.fastnbt.api.FastNBTCompound;
 import ru.leonidm.fastnbt.api.FastNBTList;
@@ -130,5 +131,27 @@ final class UnmodifiableFastNBTList implements FastNBTList {
     @Override
     public boolean isEmpty() {
         return origin.isEmpty();
+    }
+
+    @Override
+    @NotNull
+    @Contract("-> new")
+    public FastNBTList copy() {
+        return origin.copy();
+    }
+
+    @Override
+    public String toString() {
+        return origin.toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return origin.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return origin.hashCode();
     }
 }

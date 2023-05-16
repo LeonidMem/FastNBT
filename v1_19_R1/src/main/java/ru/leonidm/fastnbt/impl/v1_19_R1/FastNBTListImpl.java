@@ -9,6 +9,7 @@ import net.minecraft.nbt.NBTTagLongArray;
 import net.minecraft.nbt.NBTTagShort;
 import net.minecraft.nbt.NBTTagString;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import ru.leonidm.fastnbt.api.FastNBTCompound;
 import ru.leonidm.fastnbt.api.FastNBTList;
@@ -158,5 +159,37 @@ public class FastNBTListImpl implements FastNBTList {
     @Override
     public boolean isEmpty() {
         return nbtTagList.isEmpty();
+    }
+
+    @Override
+    @NotNull
+    @Contract("-> new")
+    public FastNBTList copy() {
+        // c = NBTTagList ()net.minecraft.nbt.NBTBase copy
+        return new FastNBTListImpl((NBTTagList) nbtTagList.c());
+    }
+
+    @Override
+    public String toString() {
+        return "FastNBTListImpl" + nbtTagList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        FastNBTListImpl that = (FastNBTListImpl) o;
+        return nbtTagList.equals(that.nbtTagList);
+    }
+
+    @Override
+    public int hashCode() {
+        return nbtTagList.hashCode();
     }
 }

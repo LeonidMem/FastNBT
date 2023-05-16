@@ -25,7 +25,7 @@ As fast as possible library for NBT.
   <dependency>
     <groupId>ru.leonidm</groupId>
     <artifactId>FastNBT</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.3-SNAPSHOT</version>
   </dependency>
 </dependencies>
 ```
@@ -37,7 +37,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'ru.leonidm:FastNBT:0.0.2-SNAPSHOT'
+  implementation 'ru.leonidm:FastNBT:0.0.3-SNAPSHOT'
 }
 ```
 
@@ -72,4 +72,6 @@ if (itemStack != null && !itemStack.getType().isAir()) {
 * FastNBTEntity
 * FastNBTBlock
 * Fix problem with Mojang keys in default ItemStacks
-* More versions
+* More supported MC versions
+* FastNBTList#iterator() and FastNBTList#stream(), probably generic
+* Annotations for arguments like `@NBT(write = true)`

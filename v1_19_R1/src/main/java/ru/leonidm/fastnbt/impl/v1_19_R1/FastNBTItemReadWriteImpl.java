@@ -66,8 +66,6 @@ public class FastNBTItemReadWriteImpl extends FastNBTItemImpl {
         } else {
             itemMetaUnhandledTags = null;
         }
-
-        System.out.println("[FastNBTItemReadWriteImpl:59] " + Integer.toString(System.identityHashCode(this), 16) + " | " + directApply + " " + applyToMeta + " " + itemMetaUnhandledTags);
     }
 
     @NotNull
@@ -200,6 +198,5 @@ public class FastNBTItemReadWriteImpl extends FastNBTItemImpl {
         if (applyToMeta) {
             itemMetaUnhandledTags.put(key, initializer.get());
         }
-        System.out.println("[FastNBTItemReadWriteImpl:196] " + Integer.toString(System.identityHashCode(this), 16) + " | " + itemMetaUnhandledTags);
     }
 }

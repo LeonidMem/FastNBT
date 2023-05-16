@@ -2,6 +2,7 @@ package ru.leonidm.fastnbt.impl.v1_19_R1;
 
 import net.minecraft.nbt.NBTTagCompound;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import ru.leonidm.fastnbt.api.FastNBTCompound;
 import ru.leonidm.fastnbt.api.FastNBTList;
@@ -248,5 +249,36 @@ public class FastNBTCompoundImpl implements FastNBTCompound {
     public boolean isEmpty() {
         // f = NBTTagCompound ()Z isEmpty
         return nbtTagCompound.f();
+    }
+
+    @Override
+    @NotNull
+    @Contract("-> new")
+    public FastNBTCompound copy() {
+        return new FastNBTCompoundImpl((NBTTagCompound) nbtTagCompound.c());
+    }
+
+    @Override
+    public String toString() {
+        return "FastNBTCompoundImpl" + nbtTagCompound;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        FastNBTCompoundImpl that = (FastNBTCompoundImpl) o;
+        return nbtTagCompound.equals(that.nbtTagCompound);
+    }
+
+    @Override
+    public int hashCode() {
+        return nbtTagCompound.hashCode();
     }
 }

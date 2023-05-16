@@ -17,4 +17,9 @@ public abstract class FastNBTItemImpl extends FastNBTCompoundImpl implements Fas
     public ItemStack getOrigin() {
         return itemStack;
     }
+
+    @Override
+    public String toString() {
+        return "FastNBTItemImpl" + nbtTagCompound;
+    }
 }

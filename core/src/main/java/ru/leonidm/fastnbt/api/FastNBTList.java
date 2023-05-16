@@ -1,6 +1,7 @@
 package ru.leonidm.fastnbt.api;
 
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import ru.leonidm.fastnbt.utils.FastNBTUtils;
 
@@ -65,5 +66,9 @@ public interface FastNBTList {
     int size();
 
     boolean isEmpty();
+
+    @NotNull
+    @Contract("-> new")
+    FastNBTList copy();
 
 }

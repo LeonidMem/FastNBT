@@ -104,4 +104,8 @@ public interface FastNBTCompound {
 
     boolean isEmpty();
 
+    @NotNull
+    @Contract("-> new")
+    FastNBTCompound copy();
+
 }
