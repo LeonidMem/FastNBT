@@ -88,6 +88,8 @@ public interface FastNBTList<E> extends Iterable<E> {
                 remove(i);
                 return true;
             }
+
+            i++;
         }
 
         return false;
