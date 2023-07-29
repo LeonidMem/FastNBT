@@ -25,7 +25,7 @@ As fast as possible library for NBT.
   <dependency>
     <groupId>ru.leonidm</groupId>
     <artifactId>FastNBT</artifactId>
-     <version>0.2.2-SNAPSHOT</version>
+     <version>0.2.3-SNAPSHOT</version>
   </dependency>
 </dependencies>
 ```
@@ -37,7 +37,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'ru.leonidm:FastNBT:0.2.2-SNAPSHOT'
+  implementation 'ru.leonidm:FastNBT:0.2.3-SNAPSHOT'
 }
 ```
 

@@ -93,8 +93,11 @@ public final class NMSFastNBTUtils {
         itemCompound.a("Count", (byte) itemStack.getAmount());
 
         NBTTagCompound compound = NMSFastNBTUtils.getCompound(itemStack, true);
-        // a = NBTTagCompound (String,net.minecraft.nbt.NBTBase)net.minecraft.nbt.NBTBase put
-        itemCompound.a("tag", compound);
+        // f = NBTTagCompound ()Z isEmpty
+        if (!compound.f()) {
+            // a = NBTTagCompound (String,net.minecraft.nbt.NBTBase)net.minecraft.nbt.NBTBase put
+            itemCompound.a("tag", compound);
+        }
 
         return itemCompound;
     }
