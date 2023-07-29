@@ -288,6 +288,12 @@ public class FastNBTCompoundImpl implements FastNBTCompound {
     }
 
     @Override
+    @NotNull
+    public ItemStack asItemStack() {
+        return NMSFastNBTUtils.asItemStack(nbtTagCompound);
+    }
+
+    @Override
     public String toString() {
         return "FastNBTCompoundImpl" + nbtTagCompound;
     }

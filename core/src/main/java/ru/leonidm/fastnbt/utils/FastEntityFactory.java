@@ -23,6 +23,9 @@ public interface FastEntityFactory {
     <E> FastNBTList<E> createList(@NotNull FastNBTType<E> fastNBTType);
 
     @NotNull
+    FastNBTCompound asCompound(@NotNull ItemStack itemStack);
+
+    @NotNull
     FastNBTItem wrapForWrite(@NotNull ItemStack itemStack, boolean directApply);
 
     @NotNull

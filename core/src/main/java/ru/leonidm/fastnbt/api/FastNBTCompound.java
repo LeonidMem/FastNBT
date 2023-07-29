@@ -17,6 +17,11 @@ public interface FastNBTCompound {
         return FastEntityFactory.get().createCompound();
     }
 
+    @NotNull
+    static FastNBTCompound create(@NotNull ItemStack itemStack) {
+        return FastEntityFactory.get().asCompound(itemStack);
+    }
+
     boolean getBoolean(@NotNull String key);
 
     void setBoolean(@NotNull String key, boolean value);
@@ -139,5 +144,8 @@ public interface FastNBTCompound {
     @NotNull
     @Contract("-> new")
     FastNBTCompound copy();
+
+    @NotNull
+    ItemStack asItemStack();
 
 }

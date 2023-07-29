@@ -28,6 +28,12 @@ public class FastEntityFactoryImpl implements FastEntityFactory {
 
     @Override
     @NotNull
+    public FastNBTCompound asCompound(@NotNull ItemStack itemStack) {
+        return new FastNBTCompoundImpl(NMSFastNBTUtils.asCompound(itemStack));
+    }
+
+    @Override
+    @NotNull
     public FastNBTItem wrapForWrite(@NotNull ItemStack itemStack, boolean directApply) {
         return new FastNBTItemReadWriteImpl(itemStack, directApply);
     }

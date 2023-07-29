@@ -6,7 +6,7 @@ plugins {
 
 def fastNbtGroupId = 'ru.leonidm'
 def fastNbtArtifactId = 'FastNBT'
-def fastNbtVersion = '0.2.1-SNAPSHOT'
+def fastNbtVersion = '0.2.2-SNAPSHOT'
 
 group = fastNbtGroupId
 version = fastNbtVersion

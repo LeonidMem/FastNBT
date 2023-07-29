@@ -198,7 +198,7 @@ final class UnmodifiableFastNBTCompound implements FastNBTCompound {
     }
 
     @Override
-    public boolean contains(@NotNull String key, @NotNull FastNBTType fastNBTType) {
+    public boolean contains(@NotNull String key, @NotNull FastNBTType<?> fastNBTType) {
         return origin.contains(key, fastNBTType);
     }
 
@@ -244,5 +244,11 @@ final class UnmodifiableFastNBTCompound implements FastNBTCompound {
     @Override
     public int hashCode() {
         return origin.hashCode();
+    }
+
+    @Override
+    @NotNull
+    public ItemStack asItemStack() {
+        return origin.asItemStack();
     }
 }
