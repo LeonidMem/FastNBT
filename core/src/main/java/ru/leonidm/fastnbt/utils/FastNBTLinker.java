@@ -20,7 +20,8 @@ public final class FastNBTLinker {
         String version = bukkitPackageName.substring(bukkitPackageName.lastIndexOf(46) + 1);
         String packageName = "ru.leonidm.fastnbt.impl." + version + ".";
 
-        Class<FastEntityFactory> factoryClass = (Class<FastEntityFactory>) Class.forName(packageName + "FastEntityFactoryImpl");
+        Class<? extends FastEntityFactory> factoryClass = Class.forName(packageName + "FastEntityFactoryImpl")
+                .asSubclass(FastEntityFactory.class);
         fastEntityFactory = factoryClass.getConstructor().newInstance();
     }
 

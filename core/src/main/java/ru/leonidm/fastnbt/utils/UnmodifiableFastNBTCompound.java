@@ -149,18 +149,30 @@ final class UnmodifiableFastNBTCompound implements FastNBTCompound {
     }
 
     @Override
+    @NotNull
+    public FastNBTCompound getLinkedCompound(@NotNull String key) {
+        throw new UnsupportedOperationException("FastNBTCompound is unmodifiable");
+    }
+
+    @Override
     public void setCompound(@NotNull String key, @NotNull FastNBTCompound fastNBTCompound) {
         throw new UnsupportedOperationException("FastNBTCompound is unmodifiable");
     }
 
     @Override
     @NotNull
-    public FastNBTList getList(@NotNull String key, @NotNull FastNBTType fastNBTType) {
+    public <T> FastNBTList<T> getList(@NotNull String key, @NotNull FastNBTType<T> fastNBTType) {
         return FastNBTUtils.unmodifiableList(origin.getList(key, fastNBTType));
     }
 
     @Override
-    public void setList(@NotNull String key, @NotNull FastNBTList fastNBTList) {
+    @NotNull
+    public <T> FastNBTList<T> getLinkedList(@NotNull String key, @NotNull FastNBTType<T> fastNBTType) {
+        throw new UnsupportedOperationException("FastNBTCompound is unmodifiable");
+    }
+
+    @Override
+    public void setList(@NotNull String key, @NotNull FastNBTList<?> fastNBTList) {
         throw new UnsupportedOperationException("FastNBTCompound is unmodifiable");
     }
 

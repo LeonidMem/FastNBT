@@ -1,6 +1,7 @@
 package ru.leonidm.fastnbt.impl.v1_19_R1;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -177,6 +178,20 @@ public class FastNBTCompoundImpl implements FastNBTCompound {
     }
 
     @Override
+    @NotNull
+    public FastNBTCompound getLinkedCompound(@NotNull String key) {
+        // p = NBTTagCompound (String)NBTTagCompound getCompound
+        NBTTagCompound nbtTagCompound1 = nbtTagCompound.p(key);
+
+        if (!contains(key)) {
+            // a = NBTTagCompound (String,net.minecraft.nbt.NBTBase)net.minecraft.nbt.NBTBase put
+            nbtTagCompound.a(key, nbtTagCompound1);
+        }
+
+        return new FastNBTCompoundImpl(nbtTagCompound1);
+    }
+
+    @Override
     public void setCompound(@NotNull String key, @NotNull FastNBTCompound fastNBTCompound) {
         // a = NBTTagCompound (String,net.minecraft.nbt.NBTBase)net.minecraft.nbt.NBTBase put
         nbtTagCompound.a(key, ((FastNBTCompoundImpl) fastNBTCompound).nbtTagCompound);
@@ -184,9 +199,23 @@ public class FastNBTCompoundImpl implements FastNBTCompound {
 
     @Override
     @NotNull
-    public <T> FastNBTList<T> getList(@NotNull String key, @NotNull FastNBTType<T> fastNbtType) {
+    public <T> FastNBTList<T> getList(@NotNull String key, @NotNull FastNBTType<T> fastNBTType) {
         // c = NBTTagCompound (String,I)NBTTagList getList
-        return new FastNBTListImpl<>(nbtTagCompound.c(key, fastNbtType.getId()), fastNbtType);
+        return new FastNBTListImpl<>(nbtTagCompound.c(key, fastNBTType.getId()), fastNBTType);
+    }
+
+    @Override
+    @NotNull
+    public <T> FastNBTList<T> getLinkedList(@NotNull String key, @NotNull FastNBTType<T> fastNBTType) {
+        // c = NBTTagCompound (String,I)NBTTagList getList
+        NBTTagList nbtTagList = nbtTagCompound.c(key, fastNBTType.getId());
+
+        if (!contains(key)) {
+            // a = NBTTagCompound (String,net.minecraft.nbt.NBTBase)net.minecraft.nbt.NBTBase put
+            nbtTagCompound.a(key, nbtTagList);
+        }
+
+        return new FastNBTListImpl<>(nbtTagList, fastNBTType);
     }
 
     @Override

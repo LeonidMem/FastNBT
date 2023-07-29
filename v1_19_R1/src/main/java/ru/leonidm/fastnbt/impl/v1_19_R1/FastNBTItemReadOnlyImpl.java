@@ -87,14 +87,26 @@ public class FastNBTItemReadOnlyImpl extends FastNBTItemImpl {
     }
 
     @Override
+    @NotNull
+    public FastNBTCompound getLinkedCompound(@NotNull String key) {
+        throw new UnsupportedOperationException("FastNBTItem is read-only");
+    }
+
+    @Override
     public void setCompound(@NotNull String key, @NotNull FastNBTCompound fastNBTCompound) {
         throw new UnsupportedOperationException("FastNBTItem is read-only");
     }
 
     @Override
     @NotNull
-    public <T> FastNBTList<T> getList(@NotNull String key, @NotNull FastNBTType<T> fastNbtType) {
-        return FastNBTUtils.unmodifiableList(super.getList(key, fastNbtType));
+    public <T> FastNBTList<T> getList(@NotNull String key, @NotNull FastNBTType<T> fastNBTType) {
+        return FastNBTUtils.unmodifiableList(super.getList(key, fastNBTType));
+    }
+
+    @Override
+    @NotNull
+    public <T> FastNBTList<T> getLinkedList(@NotNull String key, @NotNull FastNBTType<T> fastNBTType) {
+        throw new UnsupportedOperationException("FastNBTItem is read-only");
     }
 
     @Override

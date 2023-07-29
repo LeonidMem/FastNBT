@@ -3,7 +3,9 @@ package ru.leonidm.fastnbt.impl.v1_19_R1;
 import lombok.SneakyThrows;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import org.bukkit.craftbukkit.v1_19_R1.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_19_R1.inventory.CraftItemStack;
+import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
@@ -99,9 +101,42 @@ public final class NMSFastNBTUtils {
 
     @NotNull
     public static ItemStack asItemStack(@NotNull NBTTagCompound itemCompound) {
-        // a = net.minecraft.world.item.ItemStack (NBTTagCompound)net.minecraft.world.item.ItemStack
+        // a = net.minecraft.world.item.ItemStack (NBTTagCompound)net.minecraft.world.item.ItemStack of
         var nmsItemStack = net.minecraft.world.item.ItemStack.a(itemCompound);
 
         return CraftItemStack.asCraftMirror(nmsItemStack);
+    }
+
+    @NotNull
+    public static NBTTagCompound asCompound(@NotNull Entity entity) {
+        if (entity instanceof CraftEntity craftEntity) {
+            net.minecraft.world.entity.Entity nmsEntity = craftEntity.getHandle();
+
+            // f = net.minecraft.world.entity.Entity (NBTTagCompound)NBTTagCompound saveWithoutId
+            return nmsEntity.f(new NBTTagCompound());
+        }
+
+        throw new IllegalArgumentException("Entity " + entity.getClass().getName() + " is not CraftEntity");
+    }
+
+    public static void saveCompound(@NotNull Entity entity, @NotNull NBTTagCompound entityCompound) {
+        if (entity instanceof CraftEntity craftEntity) {
+            net.minecraft.world.entity.Entity nmsEntity = craftEntity.getHandle();
+
+            // g = net.minecraft.world.entity.Entity (NBTTagCompound)V load
+            nmsEntity.g(entityCompound);
+            return;
+        }
+
+        throw new IllegalArgumentException("Entity " + entity.getClass().getName() + " is not CraftEntity");
+    }
+
+    public static void saveBukkitCompound(@NotNull Entity entity, @NotNull NBTTagCompound bukkitValuesCompound) {
+        if (entity instanceof CraftEntity craftEntity) {
+            craftEntity.readBukkitValues(bukkitValuesCompound);
+            return;
+        }
+
+        throw new IllegalArgumentException("Entity " + entity.getClass().getName() + " is not CraftEntity");
     }
 }

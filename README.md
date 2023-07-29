@@ -25,7 +25,7 @@ As fast as possible library for NBT.
   <dependency>
     <groupId>ru.leonidm</groupId>
     <artifactId>FastNBT</artifactId>
-    <version>0.1.4-SNAPSHOT</version>
+     <version>0.2.0-SNAPSHOT</version>
   </dependency>
 </dependencies>
 ```
@@ -37,7 +37,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'ru.leonidm:FastNBT:0.1.4-SNAPSHOT'
+  implementation 'ru.leonidm:FastNBT:0.2.0-SNAPSHOT'
 }
 ```
 
@@ -66,14 +66,39 @@ if (itemStack != null && !itemStack.getType().isAir()) {
     FastNBTItem writeNbtItem = FastNBTItem.write(itemStack, true);
     writeNbtItem.setInt("SomeKey", 1); // Will not throw any exception
 
+    // You can also use getLinkedList or getLinkedCompound methods to put required entity
+    // right into the NBT if NBT doesn't contains given key. It's useful when you are going\
+    // to save compound right after the setters. But you should know that these methods will
+    // throw exceptions in read-only mode.
+    writeNbtItem.getLinkedCompound("MyCompound").setString("SomeKey", "SomeValue");
+
     // I do not recommend to set Mojang keys like "CustomModelData" using FastNBTItem, because it will
     // will work only if provided ItemStack is instance of CraftItemStack, which is not always true.
 }
 ```
 
+### Entities
+```java
+Entity entity = event.getEntity();
+FastNBTEntity nbtEntity = FastNBTEntity.wrap(entity);
+
+UUID entityUuid = nbtEntity.getUUID("UUID");
+
+nbtEntity.setBoolean("NoGravity", true);
+
+// If you want to save custom tags, use persistent compound
+nbtEntity.getLinkedPersistentCompound().setBoolean("MyOwnTag", false);
+
+// You can save only this persistent compound that is really fast 
+nbtEntity.savePersistentCompound();
+
+// Or you can save the whole entity, but it requires more time, and also
+// I don't see any purpose to use such method, because usual Minecraft
+// tags can be easily changed via API provided by Bukkit
+nbtEntity.save();
+```
+
 # TODO:
-* FastNBTEntity
 * FastNBTBlock
 * Fix problem with Mojang keys in default ItemStacks
 * More supported MC versions
-* Adapters for NBTAPI entities

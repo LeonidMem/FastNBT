@@ -73,13 +73,39 @@ public interface FastNBTCompound {
         setLongArray(key, FastNBTUtils.toLongArray(value));
     }
 
+    /**
+     * Returns new compound if it is not stored in this compound.
+     * If you want to link new compound to this compound, use
+     * {@link FastNBTCompound#getLinkedCompound(String)}
+     */
     @NotNull
     FastNBTCompound getCompound(@NotNull String key);
 
+    /**
+     * If compound with given key was not found, this method
+     * creates new compound that will be returned and also
+     * links it to this compound
+     */
+    @NotNull
+    FastNBTCompound getLinkedCompound(@NotNull String key);
+
     void setCompound(@NotNull String key, @NotNull FastNBTCompound fastNBTCompound);
 
+    /**
+     * Returns new list if it is not stored in this compound.
+     * If you want to link new list to this compound, use
+     * {@link FastNBTCompound#getLinkedList(String, FastNBTType)}
+     */
     @NotNull
     <T> FastNBTList<T> getList(@NotNull String key, @NotNull FastNBTType<T> fastNBTType);
+
+    /**
+     * If list with given key was not found, this method
+     * creates new list that will be returned and also
+     * links it to this compound
+     */
+    @NotNull
+    <T> FastNBTList<T> getLinkedList(@NotNull String key, @NotNull FastNBTType<T> fastNBTType);
 
     void setList(@NotNull String key, @NotNull FastNBTList<?> fastNBTList);
 
