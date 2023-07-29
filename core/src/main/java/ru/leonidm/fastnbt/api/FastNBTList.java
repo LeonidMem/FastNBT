@@ -3,6 +3,7 @@ package ru.leonidm.fastnbt.api;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import ru.leonidm.fastnbt.utils.FastEntityFactory;
 import ru.leonidm.fastnbt.utils.FastNBTUtils;
 
 import java.util.List;
@@ -12,6 +13,11 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public interface FastNBTList<E> extends Iterable<E> {
+
+    @NotNull
+    static <E> FastNBTList<E> create(@NotNull FastNBTType<E> fastNBTType) {
+        return FastEntityFactory.get().createList(fastNBTType);
+    }
 
     short getShort(int index);
 
