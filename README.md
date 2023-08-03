@@ -7,7 +7,10 @@ As fast as possible library for NBT.
 * There is no any locks or synchronizations _(in other words, it is not multithreaded)_
 
 ## Supported versions:
-* **v1_19_R1** *(1.19.1 — 1.19.2)*
+* **v1_19_R1** *(1.19 — 1.19.2)*
+* **v1_19_R2** *(1.19.3)*
+* **v1_19_R3** *(1.19.4)*
+* **v1_20_R1** *(1.20 — 1.20.1)*
 
 ## Importing
 
@@ -25,7 +28,7 @@ As fast as possible library for NBT.
   <dependency>
     <groupId>ru.leonidm</groupId>
     <artifactId>FastNBT</artifactId>
-     <version>0.2.3-SNAPSHOT</version>
+     <version>0.3.0-SNAPSHOT</version>
   </dependency>
 </dependencies>
 ```
@@ -37,7 +40,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'ru.leonidm:FastNBT:0.2.3-SNAPSHOT'
+  implementation 'ru.leonidm:FastNBT:0.3.0-SNAPSHOT'
 }
 ```
 

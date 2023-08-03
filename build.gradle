@@ -6,7 +6,7 @@ plugins {
 
 def fastNbtGroupId = 'ru.leonidm'
 def fastNbtArtifactId = 'FastNBT'
-def fastNbtVersion = '0.2.3-SNAPSHOT'
+def fastNbtVersion = '0.3.0-SNAPSHOT'
 
 group = fastNbtGroupId
 version = fastNbtVersion
@@ -21,6 +21,9 @@ rootProject.allprojects {
         maven { url = uri("https://oss.sonatype.org/content/groups/public/") }
 
         maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+
+        // ProtocolLib
+        maven { url 'https://repo.dmulloy2.net/nexus/repository/public/' }
     }
 }
 
@@ -39,7 +42,7 @@ bukkit {
     authors = ['LeonidM', 'Supcheg']
 }
 
-def fullSupport = [':core', ':v1_19_R1']
+def fullSupport = [':core', ':v1_19_R1', ':v1_19_R2', ':v1_19_R3', ':v1_20_R1']
 
 jar {
     dependsOn = fullSupport.collect { it + ":compileJava" }
