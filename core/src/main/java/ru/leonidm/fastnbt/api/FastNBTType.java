@@ -1,5 +1,6 @@
 package ru.leonidm.fastnbt.api;
 
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,6 +18,7 @@ public final class FastNBTType<T> {
     public static final FastNBTType<String> STRING = new FastNBTType<>("STRING", 8, FastNBTList::getString);
     public static final FastNBTType<FastNBTList<?>> LIST = new FastNBTType<>("LIST", 9, null);
     public static final FastNBTType<FastNBTCompound> COMPOUND = new FastNBTType<>("COMPOUND", 10, FastNBTList::getCompound);
+    public static final FastNBTType<ItemStack> ITEM_STACK = new FastNBTType<>("COMPOUND", 10, (list, index) -> list.getCompound(index).asItemStack());
     public static final FastNBTType<int[]> INT_ARRAY = new FastNBTType<>("INT_ARRAY", 11, FastNBTList::getIntArray);
 
     private final String name;
