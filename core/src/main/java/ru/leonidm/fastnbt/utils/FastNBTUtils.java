@@ -1,5 +1,6 @@
 package ru.leonidm.fastnbt.utils;
 
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -82,5 +83,11 @@ public final class FastNBTUtils {
         return itemStack instanceof UnmodifiableItemStack
                 ? itemStack
                 : new UnmodifiableItemStack(itemStack);
+    }
+
+    @NotNull
+    public static String getBukkitVersion() {
+        String bukkitPackageName = Bukkit.getServer().getClass().getPackage().getName();
+        return bukkitPackageName.substring(bukkitPackageName.lastIndexOf(46) + 1);
     }
 }
